@@ -36,6 +36,7 @@ class HoaDonController extends Controller
     {
         $hoaDon = HoaDon::where('id',$id)->first();
         $hoaDon->trang_thai = 0;
+        $hoaDon->trang_thai_thanh_toan = 0;
         $hoaDon->save();
 
         $chiTietHoaDon = ChiTietHoaDon::where('hoa_don_id',$id)->get();
@@ -72,21 +73,8 @@ class HoaDonController extends Controller
     {
         $hoaDon = HoaDon::where('id',$id)->first();
         $hoaDon->trang_thai = 4;
+        $hoaDon->trang_thai_thanh_toan =1;
         $hoaDon->save();
-        $chiTietHoaDon = ChiTietHoaDon::where('hoa_don_id',$hoaDon->id)->get();
-       
-        foreach($chiTietHoaDon as $ct)
-        {
-            $chiTietSanPham = ChiTietSanPham::where('id', $ct->chi_tiet_san_pham_id)->first();
-           
-            $chiTietSanPham->so_luong -= $ct->so_luong;
-            $chiTietSanPham->save();
-            
-            $sanPham = SanPham::where('id',$chiTietSanPham->san_pham_id)->first(); 
-            $sanPham->so_luong -= $ct->so_luong;
-            $sanPham->save();
-
-        }
         return redirect()->route("hoa-don.danh-sach");
     }
 

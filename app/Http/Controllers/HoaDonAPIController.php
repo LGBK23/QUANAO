@@ -15,6 +15,9 @@ class HoaDonAPIController extends Controller
 {
     public function TrangThaiThanhToan(Request $request)
     {
+        //hàm này có tác dụng là bên reactjs sẽ gọi tự động khi đã thanh toán ngân hàng thành công
+        //chuyển trạng thái thanh toán từ 0 thành 1
+        //sao đó sẽ update lại số lượng sản phẩm vì trước đó trong hàm ThanhToan chỉ có tạo mới chứ chưa có giảm số lượng 
         if($request->ma)
         {
             $hoaDon = HoaDon::where('id', $request->ma)->first();
@@ -26,6 +29,18 @@ class HoaDonAPIController extends Controller
             $hoaDon = HoaDon::orderByDesc('id')->first();
             $hoaDon->trang_thai_thanh_toan = 1;
             $hoaDon->save();
+        }
+
+        $chiTietHoaDon = ChiTietHoaDon::where('hoa_don_id',$hoaDon->id)->get();
+        foreach($chiTietHoaDon as $ChiTietHoaDon)
+        {
+            $chiTietSanPham = ChiTietSanPham::where('id', $ChiTietHoaDon->chi_tiet_san_pham_id)->with('san_pham')->first();
+            $sanPham = SanPham::where('id', $chiTietSanPham->san_pham->id)->first();
+            $chiTietSanPham->so_luong -= $ChiTietHoaDon->so_luong;
+            $chiTietSanPham->save();
+            $sanPham->so_luong -= $ChiTietHoaDon->so_luong;
+            $sanPham->save();
+
         }
        
         return response()->json([
@@ -67,6 +82,7 @@ class HoaDonAPIController extends Controller
         {
            
             $hoaDon->phuong_thuc_thanh_toan = "Thanh toán khi nhận hàng";
+            
         }
         else
         {
@@ -91,13 +107,21 @@ class HoaDonAPIController extends Controller
            
             if($chiTietSanPham)
             {
-            $chiTietHoaDon = new ChiTietHoaDon(); 
-            $chiTietHoaDon->hoa_don_id = $hoaDon->id;
-            $chiTietHoaDon->chi_tiet_san_pham_id = $chiTietSanPham->id;
-            $chiTietHoaDon->so_luong = (int)$request->so_luong[$i];
-            $chiTietHoaDon->thanh_tien =  (int) $request->so_luong[$i] * $request->gia[$i] ;
-            $chiTietHoaDon->save();
-           
+                $chiTietHoaDon = new ChiTietHoaDon(); 
+                $chiTietHoaDon->hoa_don_id = $hoaDon->id;
+                $chiTietHoaDon->chi_tiet_san_pham_id = $chiTietSanPham->id;
+                $chiTietHoaDon->so_luong = (int)$request->so_luong[$i];
+                $chiTietHoaDon->thanh_tien =  (int) $request->so_luong[$i] * $request->gia[$i] ;
+                $chiTietHoaDon->save();
+            
+                if($request->PhuongThucThanhToan==1)
+                {
+                    $chiTietSanPham->so_luong -= $request->so_luong[$i];
+                    $chiTietSanPham->save();
+                    $sanPham->so_luong -= $request->so_luong[$i];
+                    $sanPham->save();
+                }
+
             }
         }
 
@@ -196,21 +220,9 @@ class HoaDonAPIController extends Controller
     {
         $hoaDon = HoaDon::where('id',$request->hdID)->first();
        $hoaDon->trang_thai =4;
+       $hoaDon->trang_thai_thanh_toan = 1;
         $hoaDon->save();
-        $chiTietHoaDon = ChiTietHoaDon::where('hoa_don_id',$hoaDon->id)->get();
-       
-        foreach($chiTietHoaDon as $ct)
-        {
-            $chiTietSanPham = ChiTietSanPham::where('id', $ct->chi_tiet_san_pham_id)->first();
-           
-            $chiTietSanPham->so_luong -= $ct->so_luong;
-            $chiTietSanPham->save();
-            
-            $sanPham = SanPham::where('id',$chiTietSanPham->san_pham_id)->first(); 
-            $sanPham->so_luong -= $ct->so_luong;
-            $sanPham->save();
-
-        }
+        
         return response()->json([
             "success"=>true,
             "message"=>"thành công",
@@ -235,6 +247,7 @@ class HoaDonAPIController extends Controller
     {
         $hoaDon = HoaDon::where('id',$id)->first();
         $hoaDon->trang_thai = 0;
+        $hoaDon->trang_thai_thanh_toan = 0;
         $hoaDon->save();
 
         $chiTietHoaDon = ChiTietHoaDon::where('hoa_don_id',$id)->get();
