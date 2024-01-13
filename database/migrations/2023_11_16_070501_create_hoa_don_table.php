@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('khach_hang_id');
             $table->integer('trang_thai');
             $table->string('phuong_thuc_thanh_toan');
+            $table->integer('trang_thai_thanh_toan');
             $table->softDeletes();
             $table->timestamps();
         });
