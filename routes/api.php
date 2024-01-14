@@ -72,10 +72,10 @@ route::get('danh-sach-loai',[LoaiAPIController::class,'DanhSachLoai']);
 
 
 route::match(['get', 'post'],'thanh-toan',[HoaDonAPIController::class,'ThanhToan']);
-route::match(['get', 'post'],'thanh-toan-ngan-hang',[HoaDonAPIController::class,'ThanhToanNganHang']);
+route::match(['get', 'post'],'trang-thai-thanh-toan',[HoaDonAPIController::class,'TrangThaiThanhToan']);
 
 route::post('kiem-tra-don-hang',[HoaDonAPIController::class,'KiemTraDonHang']);
-route::post('da-nhan-duoc-hang',[HoaDonAPIController::class,'ThanhCong']);
+route::match(['get', 'post'],'da-nhan-duoc-hang',[HoaDonAPIController::class,'ThanhCong']);
 route::post('lay-hoa-don-khach-hang',[HoaDonAPIController::class,'LayHoaDonKhachHang']);
 
 

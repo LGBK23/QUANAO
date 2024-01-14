@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\HoaDon;
 use App\Models\ChiTietHoaDon;
 use App\Models\SanPham;
+use App\Models\ChiTietSanPham;
 
 class HoaDonController extends Controller
 {
@@ -35,6 +36,7 @@ class HoaDonController extends Controller
     {
         $hoaDon = HoaDon::where('id',$id)->first();
         $hoaDon->trang_thai = 0;
+        $hoaDon->trang_thai_thanh_toan = 0;
         $hoaDon->save();
 
         $chiTietHoaDon = ChiTietHoaDon::where('hoa_don_id',$id)->get();
@@ -71,6 +73,7 @@ class HoaDonController extends Controller
     {
         $hoaDon = HoaDon::where('id',$id)->first();
         $hoaDon->trang_thai = 4;
+        $hoaDon->trang_thai_thanh_toan =1;
         $hoaDon->save();
         return redirect()->route("hoa-don.danh-sach");
     }
