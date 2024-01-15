@@ -72,9 +72,7 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0" type="search" placeholder="Search">
-                </form>
+              
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
 
@@ -83,11 +81,7 @@
 
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="{{asset('img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">HACHIBA</span>
-                        </a>
-
+                       
                     </div>
                     <div class="navbar-nav">
     <div class="nav-item text-nowrap">
