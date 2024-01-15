@@ -93,7 +93,7 @@ class HoaDonAPIController extends Controller
         $hoaDon->trang_thai = 1;
         $hoaDon->save();
         
-        $hoaDon->ma = $hoaDon->id;
+        $hoaDon->ma = $NgauNhien;
 
         
 

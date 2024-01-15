@@ -24,7 +24,7 @@ class BinhLuanController extends Controller
 
     public function XoaCapMot($id)
     {
-        $binhLuanCapMot = BinhLuanCapMot::find($id);
+        $binhLuanCapMot = BinhLuanCapMot::where('id',$id)->first();
        if($binhLuanCapMot){
          
             $binhLuanCapHai = BinhLuanCapHai::where('binh_luan_cap_mot_id',$id)->get();
@@ -33,7 +33,7 @@ class BinhLuanController extends Controller
                 foreach($binhLuanCapHai as $bl){
                     $bl->delete();
                 }
-                return redirect()->route("binh-luan.danh-sach");
+               
             }
            $binhLuanCapMot->delete();
         }

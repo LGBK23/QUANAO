@@ -84,6 +84,7 @@
 @endsection
 @section('js')
     <script>
+        
         function them(id,ten){
             $('#sua').html(`
             <div class="col-xl-3 from-cap-nhat">
@@ -108,8 +109,11 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        alert('Sửa thành công');
+                        Swal.fire({
 
+                            text:'Đã sửa thành công',
+                            icon: "success"
+                        });
                         // Cập nhật nội dung trang mà không cần tải lại trang
                         // Ví dụ: nếu có thông tin cập nhật từ server, bạn có thể sử dụng nó để cập nhật nội dung
 
@@ -121,12 +125,21 @@
                 trElement.find('.ten-san-pham').text(ten);
 
                     } else {
-                        alert('Sửa thất bại: ' + response.message);
+                        Swal.fire({
+
+                            text:'Sửa thất bại: ' + response.message,
+                            icon: "warning"
+                        });
+                       
                     }
                 },
                 error: function(error) {
-                    console.log(error);
-                    alert(error.responseJSON.message);
+                    Swal.fire({
+
+                    text: error.responseJSON.message,
+                    icon: "warning"
+                    });
+                
                 }
     });
 }
