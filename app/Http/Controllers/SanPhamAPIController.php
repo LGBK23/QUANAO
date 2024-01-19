@@ -124,9 +124,9 @@ class SanPhamAPIController extends Controller
         ]);
     }
 
-    public function GiaTang()
+    public function GiaTang($id)
     {
-        $sanPham = SanPham::orderBy('gia_ban', 'asc')->get();
+        $sanPham = SanPham::orderBy('gia_ban', 'asc')->where('loai_id',$id)->get();
         foreach($sanPham as $item)
         {
             $item->hinh_anh;
@@ -138,9 +138,9 @@ class SanPhamAPIController extends Controller
         ]);
     }
 
-    public function GiaGiam()
+    public function GiaGiam($id)
     {
-        $sanPham = SanPham::orderBy('gia_ban', 'desc')->get();
+        $sanPham = SanPham::orderBy('gia_ban', 'desc')->where('loai_id',$id)->get();
         foreach($sanPham as $item)
         {
             $item->hinh_anh;

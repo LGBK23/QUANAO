@@ -37,7 +37,7 @@ class QuanLyController extends Controller
         ->with('khach_hang')
         ->first();
 
-        $sanPham = SanPham::latest()->take(5)->get();
+        $sanPham = SanPham::orderBy('id', 'desc')->take(5)->get();
       
         $tongDoanhThu = 0;
         $namHienTai = now()->year; // Lấy năm hiện tại
@@ -101,7 +101,7 @@ class QuanLyController extends Controller
             return redirect()->route('quan-ly.trang-chu');
         }
 
-    return redirect()->route('dang-nhap');
+        return redirect()->route('dang-nhap')->with('thong_bao','Tài Khoảng hoặc mật khẩu không đúng');
     }
     public function thongTinNguoiDung()
     {
