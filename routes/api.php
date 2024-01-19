@@ -54,6 +54,9 @@ route::post('loc-loai/{idLoai}',[SanPhamAPIController::class,'LocLoaiSanPham']);
 route::get('gia-tang/{id}',[SanPhamAPIController::class,'GiaTang']);
 
 route::get('gia-giam/{id}',[SanPhamAPIController::class,'GiaGiam']);
+
+route::post('kiem-tra-so-luong',[SanPhamAPIController::class,'KiemTraSoLuong']);
+
 //------------------BÌNH LUẬN---------------------------
 
 route::post('luu-binh-luan', [BinhLuanAPIController::class, 'ThemBinhLuanCapMot']);

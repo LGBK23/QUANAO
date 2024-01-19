@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SanPham;
+use App\Models\Loai;
+use App\Models\Mau;
+use App\Models\Size;
+
 use App\Models\ChiTietSanPham;
 use App\Models\SlideShow;
 
@@ -152,5 +156,48 @@ class SanPhamAPIController extends Controller
         ]);
     }
 
+    public function KiemTraSoLuong(Request $request)
+    {
+        //tìm màu id 
+        $mau = Mau::where('ten',$request->mau)->first();
+        //tìm size id
+        $size = Size::where('ten',$request->size)->first();
+        //tìm sản phẩm id
+        $sanPham = SanPham::where('ten',$request->sanPham)->first();
+        //từ các cái tìm trên lấy chi tiết sản phẩm
+        if($mau && $size && ($sanPham || $request->sanPhamID)){
+            if($sanPham)
+            {
+                $chiTietSanPham = ChiTietSanPham::where('san_pham_id',$sanPham->id)
+                ->where('mau_id',$mau->id)->where('size_id',$size->id)->first();
+            }
+            else
+            {
+                $chiTietSanPham = ChiTietSanPham::where('san_pham_id',$request->sanPhamID)
+                ->where('mau_id',$mau->id)->where('size_id',$size->id)->first();
+            }
+           
+            
+            if($chiTietSanPham->so_luong)
+            {
+                if($request->soLuong <= $chiTietSanPham->so_luong)
+                {
+                    return response()->json([
+                        'success' => true,
+                        'trangThai' => 1,
+                    ]);
+                }
+//'Đã thêm thành công'
+                return response()->json([
+                    'success' => true,
+                    'trangThai' => 0,
+                ]);
+            }
+        }
+        return response()->json([
+            'success' => true,
+            'trangThai' => 0,
+        ]);
+    }
 
 }
