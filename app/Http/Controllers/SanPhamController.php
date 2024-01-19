@@ -19,7 +19,7 @@ class SanPhamController extends Controller
     public function view()
     {
         // $san_Pham = SanPham::all();
-        $sanPham = SanPham::with('loai')->with('nha_cung_cap')->paginate(10);
+        $sanPham = SanPham::orderBy('id', 'desc')->with('loai')->with('nha_cung_cap')->paginate(10);
 
         return view('SANPHAM/danh-sach',compact('sanPham'));
     }
@@ -342,6 +342,14 @@ class SanPhamController extends Controller
 
     public function them_Anh(Request $request,$id)
     {
+        $request->validate([
+            'HinhAnh'=>'required',
+            'HinhAnh'=>'image', 
+        ],[
+            'HinhAnh.required'=>'không được để trống',
+            'HinhAnh.image'=>'phải là file ảnh',
+
+        ]);
         $files = $request->HinhAnh;
         if($files)
         {
