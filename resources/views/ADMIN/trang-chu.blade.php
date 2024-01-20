@@ -327,7 +327,7 @@ function ThayDoiBieuDo(Nam) {
 @endsection
 
 @section('chon')
-                    <a href="/" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="/" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>THỐNG KÊ</a>
 
 
 
